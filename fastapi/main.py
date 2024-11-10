@@ -33,7 +33,7 @@ async def shutdown():
 
 @app.get("/ovpn/api/client/", tags=["APIエンドポイント"], summary="すべてのセッション情報を取得します")
 async def get_client():
-  logfile = "/src/openvpn-status.log"
+  logfile = "/var/log/openvpn-status.log"
   output = parse_openvpn_status(logfile)
   return output
 
