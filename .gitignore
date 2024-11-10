@@ -1,0 +1,4 @@
+openvpn-status.log
+__pycache__
+.env
+.vscode

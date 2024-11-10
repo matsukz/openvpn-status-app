@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js""></script>
+        <title>VPNセッション情報</title>
+    </head>
+    <body>
+        
+        <br>
+        <h1 class="text-center">研究室 OpenVPNセッション情報</h1>
+        <br>
+
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-8 col-mb-12">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td>システム</td>
+                                <td>OpenVPN 2.5.11 [SSL (OpenSSL)]</td>
+                            </tr>
+                            <tr>
+                                <td>ステータス</td>
+                                <td id="status"></td>
+                            </tr>
+                            <tr>
+                                <td>確認時間</td>
+                                <td id="gettime"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-10 col-mb-12">
+                    <div class="table-responsive">
+                        <table class="table text-center text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ユーザー</th>
+                                    <th scope="col">接続元</th>
+                                    <th scope="col">接続時間</th>
+                                    <th scope="col">仮想アドレス</th>
+                                    <th scope="col">クライアントID</th>
+                                    <th scope="col">送信量(MB)</th>
+                                    <th scope="col">受信量(MB)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="maintable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="main.js"></script>
+
+    </body>
+</html>
