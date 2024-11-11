@@ -3,8 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from extend.client_status import parse_openvpn_status
+
 from extend.system_status import check_service_status
+
+from extend.system_operation import start
 from extend.system_operation import restart
+from extend.system_operation import stop
+
 description = """
   OpenVPNのステータスを出力するWebAPIです
   """
@@ -51,15 +56,13 @@ async def operation_status(action : str):
   match action:
 
     case "start":
-      #ここに起動関数をかく
-      pass
+      result_response = start("openvpn@server")
 
     case "restart":
       result_response = restart("openvpn@server")
 
     case "stop":
-      #ここに停止関数をかく
-      pass
+      result_response = stop("openvpn@server")
 
     case _:
       raise HTTPException(status_code=404, detail="Valid parameters could not be detected...")
