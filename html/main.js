@@ -5,6 +5,8 @@ $(document).ready(function(){
 
     document.getElementById("gettime").innerText = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' });
 
+    let server_status_bool = false
+
     $.ajax({
         type: "GET",
         url: "http://" + host + ":9004/ovpn/api/status/",
@@ -17,9 +19,24 @@ $(document).ready(function(){
         }else{
             change_status("ダウン");
         }
+        server_status_bool = response.server_status;
     }).fail(function(response_status){
         change_status("不明");
     })
+
+    //ボタンの形式を決める
+    start_button = document.getElementById("btn_start");
+    switch (server_status_bool){
+        case true:
+            start_button.classList.replace("btn-success", "btn-danger");
+            start_button.textContent = "停止";
+            break;
+        default:
+            start_button.classList.replace("btn-danger", "btn-success");
+            start_button.textContent = "開始";
+            break;
+
+    }
 
     $.ajax({
         type: "GET",
