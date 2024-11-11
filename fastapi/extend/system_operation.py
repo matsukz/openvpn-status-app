@@ -1,6 +1,6 @@
 import subprocess
 
-def openvpn_restart(service_name) -> bool:
+def restart(service_name) -> bool:
     result = subprocess.run(
         ["systemctl", "restart", service_name],
         capture_output=True,
