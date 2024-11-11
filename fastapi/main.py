@@ -42,7 +42,7 @@ async def get_client():
   output = parse_openvpn_status(logfile)
   return output
 
-@app.get("/ovpn/api/status/", tags=["APIエンドポイント"], summary="すべてのセッション情報を取得します")
+@app.get("/ovpn/api/status/", tags=["APIエンドポイント"], summary="VPNサーバーの状態を取得します")
 async def get_status():
   output = check_service_status("openvpn@server")
   status:dict = {"server_status":output}
