@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 
 from extend.client_status import parse_openvpn_status
 from extend.system_status import check_service_status
-
+from extend.system_operation import restart
 description = """
   OpenVPNのステータスを出力するWebAPIです
   """
@@ -42,3 +42,29 @@ async def get_status():
   output = check_service_status("openvpn@server")
   status:dict = {"server_status":output}
   return status
+
+@app.put("/ovpn/api/status/", tags=["APIエンドポイント"], summary="VPNサーバーの状態操作を試みます")
+async def operation_status(action : str):
+
+  result_response:bool = False #レスポンス用と初期値
+
+  match action:
+
+    case "start":
+      #ここに起動関数をかく
+      pass
+
+    case "restart":
+      result_response = restart("openvpn@server")
+
+    case "stop":
+      #ここに停止関数をかく
+      pass
+
+    case _:
+      raise HTTPException(status_code=404, detail="Valid parameters could not be detected...")
+    
+  if result_response == True:
+    return {"detail":"OK"}
+  else:
+    HTTPException(status_code=503, detail="Server Error")
