@@ -8,9 +8,7 @@ function put_reboot(){
     var url = new URL(window.location.href);
     var host = url.hostname;
 
-    if(!confirm){
-        return
-    }
+    if(!confirm){return;}
 
     $.ajax({
         type: "PUT",
@@ -38,8 +36,10 @@ function btn_start(){
         default:
             action_query = "stop";
             confirm = window.confirm("OpenVPNを停止しますか？\n【警告】全てのセッションが切断されます");
-            break
+            break;
     }
+
+    if(!confirm){return;}
 
     var url = new URL(window.location.href);
     var host = url.hostname;
