@@ -1,6 +1,8 @@
-from fastapi import FastAPI, Depends,  HTTPException
+from fastapi import FastAPI, Depends,  HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
+import json
 
 from extend.client_status import parse_openvpn_status
 
@@ -9,6 +11,8 @@ from extend.system_status import check_service_status
 from extend.system_operation import start
 from extend.system_operation import restart
 from extend.system_operation import stop
+
+from extend.class_statusAction import Action
 
 description = """
   OpenVPNのステータスを出力するWebAPIです
@@ -49,25 +53,43 @@ async def get_status():
   return status
 
 @app.put("/ovpn/api/status/", tags=["APIエンドポイント"], summary="VPNサーバーの状態操作を試みます")
-async def operation_status(action : str):
+async def operation_status(action:Action):
 
-  result_response:bool = False #レスポンス用と初期値
+  action = action.dict()
 
-  match action:
+  key:str = "softwaresoftware"
+
+  match action["action"]:
 
     case "start":
-      result_response = start("openvpn@server")
-
+      #result_response = start("openvpn@server")
+      result_response = True
+    
     case "restart":
-      result_response = restart("openvpn@server")
+        if not action["key"] == key:
+          return JSONResponse(
+              status_code=status.HTTP_401_UNAUTHORIZED,
+              content={"action": action["action"], "result": False,"msg":"There is a problem with the authentication method"}
+          )
+        #result_response = restart("openvpn@server")
+        result_response = True
 
     case "stop":
-      result_response = stop("openvpn@server")
+        if not action["key"] == key:
+          return JSONResponse(
+              status_code=status.HTTP_401_UNAUTHORIZED,
+              content={"action": action["action"], "result": False,"msg":"There is a problem with the authentication method"}
+          )
+        #result_response = stop("openvpn@server")
+        result_response = True
 
     case _:
-      raise HTTPException(status_code=404, detail="Valid parameters could not be detected...")
-    
-  if result_response == True:
-    return {"detail":"OK"}
+      return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={"action": action["action"], "result": False,"msg":"Valid parameters could not be detected"}
+    )
+
+  if result_response:
+    return {"action":action["action"],"result":result_response}
   else:
     HTTPException(status_code=503, detail="Server Error")
