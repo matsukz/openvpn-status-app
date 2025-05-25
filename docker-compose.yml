@@ -1,7 +1,7 @@
 services:
   fastapi:
     container_name: ovpn-st_fastapi
-    build: .
+    build: ./fastapi
     ports:
       - 9004:9004
     volumes:
@@ -9,5 +9,16 @@ services:
       - ./openvpn-status.log:/var/log/openvpn-status.log
     working_dir: /src
     command: uvicorn main:app --reload --host 0.0.0.0 --port 9004
+    environment:
+      - TZ=Asia/Tokyo
+
+  watchdog:
+    container_name: ovpn-st_watchdog
+    build: ./watchdog
+    volumes:
+      - ./watchdog:/src
+      - ./openvpn-status.log:/var/log/openvpn-status.log
+    working_dir: /src
+    command: python3 main.py
     environment:
       - TZ=Asia/Tokyo
